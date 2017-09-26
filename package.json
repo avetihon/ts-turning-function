@@ -1,0 +1,19 @@
+{
+  "name": "turning-function",
+  "version": "1.0.0",
+  "description": "Implementation of turning function",
+  "main": "index.js",
+  "dependencies": {
+    "gl-matrix": "^2.4.0",
+    "typescript": "^2.5.2"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.2.3",
+    "webpack": "^3.5.6"
+  },
+  "scripts": {
+    "develop": "webpack --config webpack.config.js --watch"
+  },
+  "author": "Yevgeniy Tikhonov",
+  "license": "MIT"
+}
