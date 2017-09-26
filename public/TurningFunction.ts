@@ -30,7 +30,9 @@ class TurningFunction {
         let angle: number;
         let angleDeg: number;
         let angleRad: number;
-        let matrix: number[];
+        let matrixAngle: number[] = [];
+        let matrixLength: number[] = [];
+        let figureLen: number = 0;
 
         let vector1: IPoint;
         let vector2: IPoint;
@@ -51,13 +53,29 @@ class TurningFunction {
             // angleDeg = this.getAngle(vector1, vector2) * 180 / Math.PI;
             angleRad = this.getAngle(vector1, vector2);
             angleDeg = angleRad * 180 / Math.PI;
+            figureLen += this.computeVectorLenght(vector1);
+
+            matrixAngle[i] = angleRad;
+            matrixLength[i] = this.computeVectorLenght(vector1);
             // let computeDotTemp = this.computeDotProduct(vector1, vector2);
             // let multipleVektorsLenght = this.computeVectorLenght(vector1)*this.computeVectorLenght(vector2);
             // let cosAngle =  computeDotTemp / multipleVektorsLenght;
             // angleDeg = Math.acos(cosAngle) * 180 / Math.PI;
             // angleRad = Math.acos(cosAngle);
             // angle = Math.acos(this.computeDot(vector1, vector2)) * 180 / Math.PI;
-            debugger;
+
+            //debugger;
+        }
+
+        return matrixAngle;
+    }
+
+    public compare(figure1: Number[], figure2: Number[]) {
+        if (figure1.length !== figure2.length)
+            return false;
+
+        for (len = figure1.length - 1, i = len; i >= 0; i--) {
+
         }
     }
 }

@@ -5,7 +5,10 @@ import drawSquare from './CanvasWrapper';
 class Main {
     static main(): void {
         const turningFunction = new TurningFunction();
-        turningFunction.createMatrix(concavePolygon);
+        let figure1 = turningFunction.createMatrix(squareOne);
+        let figure2 = turningFunction.createMatrix(squareTwo);
+
+        turningFunction.compare(figure1, figure2);
 
         drawSquare();
     }
