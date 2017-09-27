@@ -60,38 +60,18 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 5:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__TurningFunction__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Examples__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CanvasWrapper__ = __webpack_require__(3);
 
-
-
-class Main {
-    static main() {
-        const turningFunction = new __WEBPACK_IMPORTED_MODULE_0__TurningFunction__["a" /* default */]();
-        let figure1 = turningFunction.createMatrix(__WEBPACK_IMPORTED_MODULE_1__Examples__["a" /* squareOne */]);
-        let figure2 = turningFunction.createMatrix(__WEBPACK_IMPORTED_MODULE_1__Examples__["b" /* squareTwo */]);
-        turningFunction.compare(figure1, figure2);
-        Object(__WEBPACK_IMPORTED_MODULE_2__CanvasWrapper__["a" /* default */])();
-    }
-}
-Main.main();
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
+// CONCATENATED MODULE: ./public/turning-function/core/TurningFunction.ts
 class TurningFunction {
     constructor() { }
     createVector(point1, point2) {
@@ -103,91 +83,99 @@ class TurningFunction {
     computeCrossProduct(vectorA, vectorB) {
         return vectorA[0] * vectorB[1] - vectorA[1] * vectorB[0];
     }
-    computeDotProduct(point1, point2) {
-        return point1[0] * point2[0] + point1[1] * point2[1];
+    computeDotProduct(vectorA, vectorB) {
+        return vectorA[0] * vectorB[0] + vectorA[1] * vectorB[1];
     }
     computeVectorLenght(vector) {
         return Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
     }
-    createMatrix(pointList) {
+    computePerimeter(polygon) {
         let i;
         let len;
-        let angle;
-        let angleDeg;
-        let angleRad;
-        let matrixAngle = [];
-        let matrixLength = [];
-        let figureLen = 0;
-        let vector1;
-        let vector2;
-        for (len = pointList.length - 1, i = len; i >= 0; i--) {
-            if (i === 1) {
-                vector1 = this.createVector(pointList[i], pointList[i - 1]);
-                vector2 = this.createVector(pointList[i - 1], pointList[len]);
-            }
-            else if (i === 0) {
-                vector1 = this.createVector(pointList[i], pointList[len]);
-                vector2 = this.createVector(pointList[len], pointList[len - 1]);
+        let vector;
+        let perimeter = 0;
+        for (i = 0, len = polygon.length; i < len; i += 1) {
+            if (i === len - 1) {
+                vector = this.createVector(polygon[i], polygon[0]);
             }
             else {
-                vector1 = this.createVector(pointList[i], pointList[i - 1]);
-                vector2 = this.createVector(pointList[i - 1], pointList[i - 2]);
+                vector = this.createVector(polygon[i], polygon[i + 1]);
             }
-            // let a = this.computeDotProduct(vector1, vector2);
-            // angleDeg = this.getAngle(vector1, vector2) * 180 / Math.PI;
-            angleRad = this.getAngle(vector1, vector2);
-            angleDeg = angleRad * 180 / Math.PI;
-            figureLen += this.computeVectorLenght(vector1);
-            matrixAngle[i] = angleRad;
-            matrixLength[i] = this.computeVectorLenght(vector1);
-            // let computeDotTemp = this.computeDotProduct(vector1, vector2);
-            // let multipleVektorsLenght = this.computeVectorLenght(vector1)*this.computeVectorLenght(vector2);
+            perimeter += this.computeVectorLenght(vector);
+        }
+        return perimeter;
+    }
+    createMatrix(polygon) {
+        let i;
+        let len;
+        let angle = 0; // angle in radian
+        let vectorLength = 0;
+        let matrix = [];
+        let vectorA;
+        let vectorB;
+        let perimeter = this.computePerimeter(polygon);
+        for (len = polygon.length - 1, i = len; i >= 0; i--) {
+            if (i === 1) {
+                vectorA = this.createVector(polygon[i], polygon[i - 1]);
+                vectorB = this.createVector(polygon[i - 1], polygon[len]);
+            }
+            else if (i === 0) {
+                vectorA = this.createVector(polygon[i], polygon[len]);
+                vectorB = this.createVector(polygon[len], polygon[len - 1]);
+            }
+            else {
+                vectorA = this.createVector(polygon[i], polygon[i - 1]);
+                vectorB = this.createVector(polygon[i - 1], polygon[i - 2]);
+            }
+            // let a = this.computeDotProduct(vectorA, vectorB);
+            // angleDeg = this.getAngle(vectorA, vectorB) * 180 / Math.PI;
+            angle += (-1 * this.getAngle(vectorA, vectorB));
+            vectorLength += (this.computeVectorLenght(vectorA) / perimeter);
+            matrix.push([angle, vectorLength]);
+            // debugger;
+            //
+            // matrixAngle[i] = angle;
+            // matrixLength[i] = this.computeVectorLenght(vectorA);
+            // let computeDotTemp = this.computeDotProduct(vectorA, vectorB);
+            // let multipleVektorsLenght = this.computeVectorLenght(vectorA)*this.computeVectorLenght(vectorB);
             // let cosAngle =  computeDotTemp / multipleVektorsLenght;
             // angleDeg = Math.acos(cosAngle) * 180 / Math.PI;
             // angleRad = Math.acos(cosAngle);
-            // angle = Math.acos(this.computeDot(vector1, vector2)) * 180 / Math.PI;
+            // angle = Math.acos(this.computeDot(vectorA, vectorB)) * 180 / Math.PI;
             //debugger;
         }
-        return matrixAngle;
+        return matrix;
     }
-    compare(figure1, figure2) {
-        if (figure1.length !== figure2.length)
+    compare(polygonA, polygonB) {
+        if (polygonA.length !== polygonB.length)
             return false;
-        for (len = figure1.length - 1, i = len; i >= 0; i--) {
+        let i;
+        let len;
+        for (len = polygonA.length - 1, i = len; i >= 0; i--) {
         }
+        return null;
     }
 }
-/* harmony default export */ __webpack_exports__["a"] = (TurningFunction);
+/* harmony default export */ var core_TurningFunction = (TurningFunction);
 
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
+// CONCATENATED MODULE: ./public/turning-function/core/Examples.ts
 const squareOne = [
     [20, 20],
     [40, 20],
     [40, 50],
     [20, 50]
 ];
-/* harmony export (immutable) */ __webpack_exports__["a"] = squareOne;
-
 const squareTwo = [
     [25, 25],
     [45, 25],
     [45, 55],
     [25, 55]
 ];
-/* harmony export (immutable) */ __webpack_exports__["b"] = squareTwo;
-
 const triangle = [
     [10, 10],
     [30, 30],
     [10, 30]
 ];
-/* unused harmony export triangle */
-
 const concavePolygon = [
     [10, 10],
     [20, 20],
@@ -195,24 +183,50 @@ const concavePolygon = [
     [30, 50],
     [10, 50]
 ];
-/* unused harmony export concavePolygon */
 
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
+// CONCATENATED MODULE: ./public/turning-function/core/CanvasHelper.ts
 const canvas = document.querySelector('.js-canvas');
 const context = canvas.getContext('2d');
 const drawSquare = () => {
-    context.fillStyle = 'rgba(0, 0, 200, 0.5)';
-    context.fillRect(30, 40, 50, 50);
+    // context.fillStyle = 'rgba(0, 0, 200, 0.5)';
+    // context.fillRect(30, 40, 50, 50);
 };
-/* harmony default export */ __webpack_exports__["a"] = (drawSquare);
+const drawPolygon = (polygon) => {
+    let i;
+    let len;
+    let point;
+    let pointNext;
+    context.beginPath();
+    context.moveTo(polygon[0][0], polygon[0][1]);
+    for (i = 0, len = polygon.length - 1; i < len; i += 1) {
+        point = polygon[i];
+        pointNext = polygon[i + 1];
+        context.lineTo(pointNext[0], pointNext[1]);
+    }
+    context.closePath();
+    context.fillStyle = 'rgba(0, 0, 200, 0.5)';
+    context.fill();
+};
+
+// CONCATENATED MODULE: ./public/turning-function/Main.ts
+
+
+
+class Main_Main {
+    static main() {
+        const turningFunction = new core_TurningFunction();
+        let figure1 = turningFunction.createMatrix(squareOne);
+        let figure2 = turningFunction.createMatrix(squareTwo);
+        turningFunction.compare(figure1, figure2);
+        // drawSquare();
+        drawPolygon(squareOne);
+        // drawPolygon(concavePolygon);
+    }
+}
+Main_Main.main();
 
 
 /***/ })
-/******/ ]);
+
+/******/ });
 //# sourceMappingURL=app.bundle.js.map

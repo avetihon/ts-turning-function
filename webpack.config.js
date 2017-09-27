@@ -1,11 +1,10 @@
 'use strict';
 
 const webpack = require('webpack');
-const path = require('path');
 
 module.exports = {
     entry: {
-        'app': './public/Main.ts'
+        'app': './public/turning-function/Main.ts'
     },
     output: {
         filename: './build/[name].bundle.js'
@@ -22,5 +21,8 @@ module.exports = {
                 options: { configFileName: 'develop.tsconfig.json' }
             }
         ],
-    }
+    },
+    plugins: [
+        new webpack.optimize.ModuleConcatenationPlugin()
+    ]
 };

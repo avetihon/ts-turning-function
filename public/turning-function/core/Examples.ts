@@ -1,4 +1,4 @@
-import IPoint from './IPoint';
+import IPoint from '../interfaces/IPoint';
 
 export const squareOne: IPoint[] = [
     [20, 20],

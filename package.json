@@ -2,7 +2,13 @@
   "name": "turning-function",
   "version": "1.0.0",
   "description": "TS implementation of turning function",
-  "main": "./public/Main.ts",
+  "main": "./public/turning-function/Main.ts",
+  "keywords": [
+    "typescript",
+    "turning-function",
+    "linear-algebra",
+    "computational-geometry"
+  ],
   "dependencies": {
     "typescript": "^2.5.2"
   },
