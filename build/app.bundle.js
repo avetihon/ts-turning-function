@@ -130,7 +130,7 @@ class TurningFunction {
             // let a = this.computeDotProduct(vectorA, vectorB);
             // angleDeg = this.getAngle(vectorA, vectorB) * 180 / Math.PI;
             angle += (-1 * this.getAngle(vectorA, vectorB));
-            vectorLength += (this.computeVectorLenght(vectorA) / perimeter);
+            vectorLength += (this.computeVectorLenght(vectorA) / perimeter); // normalize to 1
             matrix.push([angle, vectorLength]);
             // debugger;
             //
@@ -148,10 +148,12 @@ class TurningFunction {
     }
     compare(polygonA, polygonB) {
         if (polygonA.length !== polygonB.length)
-            return false;
+            return null;
+        const matrixA = this.createMatrix(polygonA);
+        const matrixB = this.createMatrix(polygonB);
         let i;
         let len;
-        for (len = polygonA.length - 1, i = len; i >= 0; i--) {
+        for (len = matrixA.length - 1, i = len; i >= 0; i--) {
         }
         return null;
     }
@@ -185,7 +187,7 @@ const concavePolygon = [
 ];
 
 // CONCATENATED MODULE: ./public/turning-function/core/CanvasHelper.ts
-const canvas = document.querySelector('.js-canvas');
+const canvas = document.querySelector('.js-canvas-polygon');
 const context = canvas.getContext('2d');
 const drawSquare = () => {
     // context.fillStyle = 'rgba(0, 0, 200, 0.5)';
@@ -215,9 +217,7 @@ const drawPolygon = (polygon) => {
 class Main_Main {
     static main() {
         const turningFunction = new core_TurningFunction();
-        let figure1 = turningFunction.createMatrix(squareOne);
-        let figure2 = turningFunction.createMatrix(squareTwo);
-        turningFunction.compare(figure1, figure2);
+        turningFunction.compare(squareOne, squareTwo);
         // drawSquare();
         drawPolygon(squareOne);
         // drawPolygon(concavePolygon);

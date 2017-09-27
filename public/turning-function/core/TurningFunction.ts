@@ -43,7 +43,7 @@ class TurningFunction {
         return perimeter;
     }
 
-    public createMatrix(polygon: IPolygon): any {
+    private createMatrix(polygon: IPolygon): any {
         let i: number;
         let len: number;
         let angle: number = 0; // angle in radian
@@ -69,7 +69,7 @@ class TurningFunction {
             // let a = this.computeDotProduct(vectorA, vectorB);
             // angleDeg = this.getAngle(vectorA, vectorB) * 180 / Math.PI;
             angle += (-1 * this.getAngle(vectorA, vectorB));
-            vectorLength += (this.computeVectorLenght(vectorA) / perimeter);
+            vectorLength += (this.computeVectorLenght(vectorA) / perimeter); // normalize to 1
             matrix.push([angle, vectorLength]);
             // debugger;
             //
@@ -88,13 +88,17 @@ class TurningFunction {
         return matrix;
     }
 
-    public compare(polygonA: IPolygon, polygonB: IPolygon): boolean {
+    public compare(polygonA: IPolygon, polygonB: IPolygon): number {
+
         if (polygonA.length !== polygonB.length)
-            return false;
+            return null;
+
+        const matrixA = this.createMatrix(polygonA);
+        const matrixB = this.createMatrix(polygonB);
 
         let i: number;
         let len: number;
-        for (len = polygonA.length - 1, i = len; i >= 0; i--) {
+        for (len = matrixA.length - 1, i = len; i >= 0; i--) {
 
         }
 

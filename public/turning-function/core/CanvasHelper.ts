@@ -2,7 +2,7 @@ import IPoint from '../interfaces/IPoint';
 import IPolygon from '../interfaces/IPolygon';
 
 
-const canvas: HTMLCanvasElement = document.querySelector('.js-canvas') as HTMLCanvasElement;
+const canvas: HTMLCanvasElement = document.querySelector('.js-canvas-polygon') as HTMLCanvasElement;
 const context: CanvasRenderingContext2D = canvas.getContext('2d');
 
 export const drawSquare = (): void => {
