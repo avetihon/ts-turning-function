@@ -43,46 +43,34 @@ class TurningFunction {
         return perimeter;
     }
 
-    private createMatrix(polygon: IPolygon): any {
-        let i: number;
-        let len: number;
+    private createMatrix(polygon: IPolygon, perimeter: number, index: number = polygon.length - 1): any {
         let angle: number = 0; // angle in radian
         let vectorLength: number = 0;
-        let matrix: number[][] = [];
+        let matrix: number[][] = [[0, 0]];
 
         let vectorA: IPoint;
         let vectorB: IPoint;
 
-        let perimeter = this.computePerimeter(polygon);
+        let i: number;
+        let len: number = polygon.length - 1;
+        let previousIndex: number = index - 1 < 0 ? len : index - 1;
+        for (i = 0; i <= len; i += 1) {
+            vectorA = this.createVector(polygon[index], polygon[previousIndex]);
 
-        for (len = polygon.length - 1, i = len; i >= 0; i--) {
-            if (i === 1) {
-                vectorA = this.createVector(polygon[i], polygon[i - 1]);
-                vectorB = this.createVector(polygon[i - 1], polygon[len]);
-            } else if (i === 0) {
-                vectorA = this.createVector(polygon[i], polygon[len]);
-                vectorB = this.createVector(polygon[len], polygon[len - 1]);
-            } else {
-                vectorA = this.createVector(polygon[i], polygon[i - 1]);
-                vectorB = this.createVector(polygon[i - 1], polygon[i - 2]);
+            index -= 1;
+            previousIndex -= 1;
+
+            if (previousIndex < 0) {
+                previousIndex = len;
+            } else if (index < 0) {
+                index = len;
             }
-            // let a = this.computeDotProduct(vectorA, vectorB);
-            // angleDeg = this.getAngle(vectorA, vectorB) * 180 / Math.PI;
+
+            vectorB = this.createVector(polygon[index], polygon[previousIndex]);
+
             angle += (-1 * this.getAngle(vectorA, vectorB));
             vectorLength += (this.computeVectorLenght(vectorA) / perimeter); // normalize to 1
             matrix.push([angle, vectorLength]);
-            // debugger;
-            //
-            // matrixAngle[i] = angle;
-            // matrixLength[i] = this.computeVectorLenght(vectorA);
-            // let computeDotTemp = this.computeDotProduct(vectorA, vectorB);
-            // let multipleVektorsLenght = this.computeVectorLenght(vectorA)*this.computeVectorLenght(vectorB);
-            // let cosAngle =  computeDotTemp / multipleVektorsLenght;
-            // angleDeg = Math.acos(cosAngle) * 180 / Math.PI;
-            // angleRad = Math.acos(cosAngle);
-            // angle = Math.acos(this.computeDot(vectorA, vectorB)) * 180 / Math.PI;
-
-            //debugger;
         }
 
         return matrix;
@@ -90,15 +78,15 @@ class TurningFunction {
 
     public compare(polygonA: IPolygon, polygonB: IPolygon): number {
 
-        if (polygonA.length !== polygonB.length)
-            return null;
+        const perimeterPolygonA: number = this.computePerimeter(polygonA);
+        const perimeterPolygonB: number = this.computePerimeter(polygonB);
 
-        const matrixA = this.createMatrix(polygonA);
-        const matrixB = this.createMatrix(polygonB);
+        const matrixA = this.createMatrix(polygonA, perimeterPolygonA);
+        // const matrixB = this.createMatrix(polygonB);
 
         let i: number;
         let len: number;
-        for (len = matrixA.length - 1, i = len; i >= 0; i--) {
+        for (len = polygonA.length - 1, i = len; i >= 0; i--) {
 
         }
 

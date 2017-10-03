@@ -5,7 +5,8 @@ import { drawSquare, drawPolygon } from './core/CanvasHelper';
 class Main {
     static main(): void {
         const turningFunction: TurningFunction = new TurningFunction();
-        turningFunction.compare(squareOne, squareTwo);
+        // turningFunction.compare(squareOne, squareTwo);
+        turningFunction.compare(triangle, squareTwo);
 
         // drawSquare();
         drawPolygon(squareOne);
