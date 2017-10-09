@@ -1,5 +1,9 @@
 import IPoint from '../interfaces/IPoint';
 import IPolygon from '../interfaces/IPolygon';
+import {drawChart, drawPolygon} from './CanvasHelper';
+
+const CANVAS_MATRIX_A = '.js-canvas-matrix-a';
+const CANVAS_MATRIX_B = '.js-canvas-matrix-b';
 
 class TurningFunction {
 
@@ -43,10 +47,14 @@ class TurningFunction {
         return perimeter;
     }
 
-    private createMatrix(polygon: IPolygon, perimeter: number, index: number = polygon.length - 1): any {
+    private createMatrix(polygon: IPolygon, perimeter: number, index: number = polygon.length - 1): number[][] {
+        if (index > polygon.length - 1) {
+            index = polygon.length - 1
+        }
+
         let angle: number = 0; // angle in radian
         let vectorLength: number = 0;
-        let matrix: number[][] = [[0, 0]];
+        let matrix: number[][] = [];
 
         let vectorA: IPoint;
         let vectorB: IPoint;
@@ -76,21 +84,74 @@ class TurningFunction {
         return matrix;
     }
 
+    private computeSum(matrixA: number[][], matrixB: number[][]): number {
+        let indexA: number = 0;
+        let indexB: number = 0;
+
+        let lastPoint = 0;
+
+        let i: number;
+        let len: number;
+        let theta: number; // the height of the rectangular strip
+        let ds: number; // the width of the rectangular strip
+        let area: number;
+        let sum: number = 0;
+
+        // count all stripes
+        for (i = 0, len = matrixA.length + matrixB.length - 1; i < len; i += 1) {
+            // compute height of current strip.
+            theta = matrixA[indexA][0] - matrixB[indexB][0];
+
+            if (matrixA[indexA][1] <= matrixB[indexB][1]) {
+                // compute width of current stripe
+                ds = matrixA[indexA][1] - lastPoint;
+                area = ds * theta;
+                sum += Math.pow(area, 2);
+
+                lastPoint = matrixA[indexA][1];
+                indexA++;
+            } else {
+                // compute width of current stripe
+                ds = matrixB[indexB][1] - lastPoint;
+                area = ds * theta;
+                sum += Math.pow(area, 2);
+
+                lastPoint = matrixB[indexB][1];
+                indexB++;
+            }
+        }
+
+        return Math.sqrt(sum);
+    }
+
     public compare(polygonA: IPolygon, polygonB: IPolygon): number {
 
         const perimeterPolygonA: number = this.computePerimeter(polygonA);
         const perimeterPolygonB: number = this.computePerimeter(polygonB);
 
-        const matrixA = this.createMatrix(polygonA, perimeterPolygonA);
-        // const matrixB = this.createMatrix(polygonB);
+        let sum: number;
+        let minimumSum: number = Number.MAX_SAFE_INTEGER;
+
+        let matrixA: number[][] = this.createMatrix(polygonA, perimeterPolygonA);
+        let matrixB: number[][];
 
         let i: number;
-        let len: number;
-        for (len = polygonA.length - 1, i = len; i >= 0; i--) {
+        for (i = polygonB.length - 1; i >= 0; i -= 1) {
+            matrixB = this.createMatrix(polygonB, perimeterPolygonB, i);
+            sum = this.computeSum(matrixA, matrixB);
 
+            if (minimumSum > sum) {
+                minimumSum = sum;
+            }
         }
 
-        return null;
+        drawChart(matrixA, CANVAS_MATRIX_A);
+        drawChart(matrixB, CANVAS_MATRIX_B);
+
+        drawPolygon(polygonA);
+        drawPolygon(polygonB);
+
+        return minimumSum;
     }
 }
 

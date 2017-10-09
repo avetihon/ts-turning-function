@@ -1,16 +1,15 @@
 import TurningFunction from './core/TurningFunction';
-import { squareOne, squareTwo, triangle, concavePolygon } from './core/Examples';
-import { drawSquare, drawPolygon } from './core/CanvasHelper';
+import {
+    squareOne, squareTwo, triangle, concavePolygon, complexConcavePolygon, circlePolygon,
+    smallCirclePolygon
+} from './core/Examples';
 
 class Main {
     static main(): void {
         const turningFunction: TurningFunction = new TurningFunction();
-        // turningFunction.compare(squareOne, squareTwo);
-        turningFunction.compare(triangle, squareTwo);
+        const distance: number = turningFunction.compare(circlePolygon, complexConcavePolygon);
 
-        // drawSquare();
-        drawPolygon(squareOne);
-        // drawPolygon(concavePolygon);
+        console.log('DISTANCE', distance);
     }
 }
 
