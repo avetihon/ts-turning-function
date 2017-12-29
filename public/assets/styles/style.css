@@ -1,3 +1,8 @@
 .c-canvas--style {
     border: 1px solid #bbbbbb;
 }
+
+.c-canvas__matrix-wrapper {
+    display: inline-block;
+    position: relative;
+}

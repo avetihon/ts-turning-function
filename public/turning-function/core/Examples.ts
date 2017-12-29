@@ -64,3 +64,13 @@ export const smallCirclePolygon: IPolygon = [
     [143, 147],
     [77, 104]
 ];
+
+export const rotatedSmallCirclePolygon: IPolygon = [
+    [83.51, 33.97],
+    [148.06, 32.63],
+    [234.02, 55.67],
+    [264.1, 113.42],
+    [215.99, 161.61],
+    [130.02, 138.58],
+    [77.4, 79.96]
+];
